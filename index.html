@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VoicePro Connect | Premium Communication Solutions</title>
+    <title>VoicePro Connect | Next-Gen Communication Solutions</title>
+    <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             /* Palette: Deep Ocean and Cyber Cyan */
@@ -13,66 +18,163 @@
             --glass-border: rgba(255, 255, 255, 0.08);
             --accent: #22d3ee; /* Cyan Accent */
             --accent-glow: rgba(34, 211, 238, 0.4);
+            --accent-dark: #0891b2;
             --text-main: #f1f5f9;
             --text-dim: #94a3b8;
+            --card-radius: 20px;
+            --transition: cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* --- Reset & Base --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            scroll-behavior: smooth; 
+            -webkit-tap-highlight-color: transparent;
+        }
+        
         body { 
-            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; 
+            font-family: 'Inter', system-ui, sans-serif; 
             background-color: var(--bg-base); 
             color: var(--text-main); 
             line-height: 1.6;
             overflow-x: hidden;
             background-image: 
-                radial-gradient(at 10% 10%, rgba(34, 211, 238, 0.1) 0px, transparent 50%),
-                radial-gradient(at 90% 90%, rgba(100, 255, 218, 0.05) 0px, transparent 50%);
+                radial-gradient(at 10% 10%, rgba(34, 211, 238, 0.12) 0px, transparent 50%),
+                radial-gradient(at 90% 90%, rgba(100, 255, 218, 0.08) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(30, 64, 175, 0.05) 0px, transparent 70%);
         }
 
-        /* --- Liquid Background Element --- */
-        .blob {
+        /* --- Liquid Background Elements --- */
+        .blob-container {
             position: fixed;
-            width: 500px;
-            height: 500px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .blob {
+            position: absolute;
+            width: 600px;
+            height: 600px;
             background: linear-gradient(180deg, var(--accent) 0%, #1e40af 100%);
             border-radius: 50%;
             filter: blur(120px);
-            opacity: 0.2;
-            z-index: -1;
-            animation: blobfloat 20s infinite alternate;
+            opacity: 0.15;
+            animation: blobfloat 25s infinite alternate var(--transition);
         }
+
+        .blob-1 { top: -10%; left: -10%; animation-duration: 20s; }
+        .blob-2 { bottom: -10%; right: -10%; animation-duration: 25s; animation-delay: -5s; }
+
         @keyframes blobfloat {
-            0% { transform: translate(-100px, -100px) scale(1); }
-            100% { transform: translate(100px, 100px) scale(1.2); }
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            33% { transform: translate(100px, 50px) scale(1.1) rotate(10deg); }
+            66% { transform: translate(-50px, 150px) scale(0.9) rotate(-10deg); }
+            100% { transform: translate(0, 0) scale(1) rotate(0deg); }
         }
 
         /* --- Standard Section Spacing --- */
-        .section { padding: 120px 10%; position: relative; }
-        h2 { font-size: 2.8rem; text-align: center; margin-bottom: 1rem; color: var(--text-main); text-transform: uppercase; letter-spacing: 2px; }
-        .section-subtitle { text-align: center; color: var(--text-dim); max-width: 600px; margin: 0 auto 60px; font-size: 1.1rem; }
+        .section { 
+            padding: 140px 10%; 
+            position: relative; 
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s var(--transition);
+        }
+        
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h2 { 
+            font-size: clamp(2rem, 5vw, 3.2rem); 
+            text-align: center; 
+            margin-bottom: 1rem; 
+            color: var(--text-main); 
+            text-transform: uppercase; 
+            letter-spacing: 4px;
+            font-weight: 800;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 10px rgba(34, 211, 238, 0.3); }
+            50% { text-shadow: 0 0 20px rgba(34, 211, 238, 0.6); }
+        }
+
+        .section-subtitle { 
+            text-align: center; 
+            color: var(--text-dim); 
+            max-width: 650px; 
+            margin: 0 auto 80px; 
+            font-size: 1.15rem;
+            font-weight: 300;
+            animation: fadeInUp 1.2s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
         /* --- Universal Glass Styling --- */
         .glass {
             background: var(--glass-bg);
-            backdrop-filter: blur(12px); /* Crucial for Liquid Glass */
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
-            transition: 0.4s ease;
+            border-radius: var(--card-radius);
+            box-shadow: 0 15px 35px 0 rgba(0, 0, 0, 0.3);
+            transition: all 0.5s var(--transition);
+            position: relative;
+            overflow: hidden;
         }
+
+        .glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.05),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .glass:hover::before {
+            left: 100%;
+        }
+
         .glass:hover {
-            border-color: rgba(34, 211, 238, 0.3);
-            box-shadow: 0 8px 32px 0 var(--accent-glow);
-            transform: translateY(-5px);
+            border-color: rgba(34, 211, 238, 0.4);
+            box-shadow: 0 20px 40px 0 rgba(34, 211, 238, 0.15);
+            transform: translateY(-8px);
         }
 
         /* --- Navigation --- */
         nav { 
-            background: rgba(2, 6, 23, 0.7);
-            backdrop-filter: blur(10px);
-            padding: 1.2rem 8%; 
+            background: rgba(2, 6, 23, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 1.5rem 8%; 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
@@ -81,9 +183,48 @@
             top: 0; 
             z-index: 1000; 
             border-bottom: 1px solid var(--glass-border);
+            transition: all 0.4s var(--transition);
         }
-        .logo { font-size: 1.4rem; font-weight: 800; color: var(--text-main); letter-spacing: 2px; }
-        .logo span { color: var(--accent); }
+
+        nav.scrolled {
+            padding: 1rem 8%;
+            background: rgba(2, 6, 23, 0.95);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.4s var(--transition);
+        }
+
+        .logo-container:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-img {
+            height: 50px;
+            width: auto;
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .logo-text { 
+            font-size: 1.3rem; 
+            font-weight: 800; 
+            color: var(--text-main); 
+            letter-spacing: 2px; 
+            text-decoration: none;
+            background: linear-gradient(135deg, var(--text-main), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
         /* --- Hero Section --- */
         header { 
@@ -96,13 +237,43 @@
             padding: 0 20px;
             position: relative;
         }
-        header h1 { font-size: 4rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; background: linear-gradient(to right, #fff, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        header p { font-size: 1.3rem; color: var(--text-dim); max-width: 700px; margin-bottom: 3rem; }
+
+        header h1 { 
+            font-size: clamp(2.5rem, 8vw, 5.5rem); 
+            font-weight: 800; 
+            line-height: 1; 
+            margin-bottom: 1.5rem; 
+            background: linear-gradient(135deg, #fff 30%, var(--accent) 100%); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            letter-spacing: -2px;
+            animation: heroSlideIn 1s ease-out;
+        }
+
+        @keyframes heroSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        header p { 
+            font-size: clamp(1.1rem, 2vw, 1.4rem); 
+            color: var(--text-dim); 
+            max-width: 750px; 
+            margin-bottom: 3.5rem;
+            font-weight: 300;
+            animation: fadeInUp 1.2s ease-out 0.2s both;
+        }
         
         /* Glass Button */
         .btn { 
-            padding: 14px 35px; 
-            background: var(--glass-bg);
+            padding: 16px 45px; 
+            background: rgba(34, 211, 238, 0.05);
             backdrop-filter: blur(5px);
             border: 1px solid var(--accent);
             color: var(--accent); 
@@ -110,129 +281,513 @@
             border-radius: 50px; 
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.9rem;
-            transition: 0.3s;
-            box-shadow: 0 0 15px var(--accent-glow);
+            letter-spacing: 2px;
+            font-size: 0.95rem;
+            transition: all 0.4s var(--transition);
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.2);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            animation: fadeInUp 1.2s ease-out 0.4s both;
         }
-        .btn:hover { background: var(--accent); color: var(--bg-base); box-shadow: 0 0 30px var(--accent); }
+
+        .btn:hover { 
+            background: var(--accent); 
+            color: var(--bg-base); 
+            box-shadow: 0 0 40px var(--accent);
+            transform: scale(1.05);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
 
         /* --- Services Section --- */
-        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; }
-        .service-card { padding: 40px; text-align: left; position: relative; overflow: hidden; }
-        .service-card i { font-size: 2.2rem; color: var(--accent); margin-bottom: 20px; display: inline-block; }
-        .service-card h3 { font-size: 1.5rem; margin-bottom: 10px; color: var(--text-main); }
-        .service-card p { color: var(--text-dim); font-size: 1rem; }
-        /* Add a soft glow behind the icon */
-        .service-card i::after { content:''; position: absolute; width: 50px; height: 50px; background: var(--accent); filter: blur(35px); opacity: 0.3; left: 30px; top: 30px; z-index: -1; }
+        .services-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+            gap: 2.5rem; 
+        }
+
+        .service-card { 
+            padding: 50px 40px; 
+            text-align: left; 
+            animation: cardSlideIn 0.8s ease-out both;
+        }
+
+        .service-card:nth-child(1) { animation-delay: 0.1s; }
+        .service-card:nth-child(2) { animation-delay: 0.2s; }
+        .service-card:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes cardSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .service-card i { 
+            font-size: 2.5rem; 
+            color: var(--accent); 
+            margin-bottom: 25px; 
+            display: inline-block;
+            transition: all 0.5s var(--transition);
+        }
+
+        .service-card:hover i {
+            transform: scale(1.3) rotate(10deg);
+            text-shadow: 0 0 25px var(--accent);
+            filter: drop-shadow(0 0 15px var(--accent));
+        }
+
+        .service-card h3 { 
+            font-size: 1.6rem; 
+            margin-bottom: 15px; 
+            color: var(--text-main); 
+            font-weight: 700;
+        }
+
+        .service-card p { 
+            color: var(--text-dim); 
+            font-size: 1.05rem; 
+            font-weight: 300;
+        }
 
         /* --- Executive Team Section --- */
-        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 50px; }
-        .member-card { padding: 30px; text-align: center; }
+        .team-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 2.5rem; 
+            margin-top: 50px; 
+        }
+
+        .member-card { 
+            padding: 40px 30px; 
+            text-align: center; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: fit-content;
+            animation: memberCardIn 0.8s ease-out both;
+        }
+
+        .member-card:nth-child(1) { animation-delay: 0.1s; }
+        .member-card:nth-child(2) { animation-delay: 0.2s; }
+        .member-card:nth-child(3) { animation-delay: 0.3s; }
+        .member-card:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes memberCardIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
         
-        /* The "Liquid" Icon Container (Replacing Photos) */
         .member-icon-wrap { 
-            width: 100px; 
-            height: 100px; 
-            background: rgba(34, 211, 238, 0.05);
+            width: 110px; 
+            height: 110px; 
+            background: rgba(34, 211, 238, 0.08);
             border: 2px solid var(--accent);
             border-radius: 50%; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            margin: 0 auto 20px; 
-            font-size: 2rem; 
+            margin: 0 auto 25px; 
+            font-size: 2.2rem; 
             color: var(--accent);
-            box-shadow: 0 0 20px var(--accent-glow), inset 0 0 10px var(--accent-glow);
+            box-shadow: 0 0 25px var(--accent-glow), inset 0 0 15px var(--accent-glow);
             position: relative;
+            transition: all 0.5s var(--transition);
         }
-        /* Liquid ripple effect */
-        .member-icon-wrap::before { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; background: var(--accent); opacity: 0.1; animation: ripple 3s infinite; }
-        @keyframes ripple { 0% { transform: scale(1); opacity: 0.1; } 100% { transform: scale(1.4); opacity: 0; } }
 
-        .member-card h3 { font-size: 1.3rem; color: var(--text-main); margin-bottom: 5px; }
-        .member-title { color: var(--accent); font-size: 0.95rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .member-card:hover .member-icon-wrap {
+            transform: scale(1.15) rotate(10deg);
+            box-shadow: 0 0 40px var(--accent), inset 0 0 25px var(--accent);
+        }
+
+        .member-icon-wrap::before { 
+            content: ''; 
+            position: absolute; 
+            width: 100%; 
+            height: 100%; 
+            border-radius: 50%; 
+            background: var(--accent); 
+            opacity: 0.1; 
+            animation: ripple 3s infinite; 
+        }
+
+        @keyframes ripple { 
+            0% { transform: scale(1); opacity: 0.15; } 
+            100% { transform: scale(1.6); opacity: 0; } 
+        }
+
+        .member-card h3 { 
+            font-size: 1.4rem; 
+            color: var(--text-main); 
+            margin-bottom: 8px; 
+            font-weight: 700;
+        }
+
+        .member-title { 
+            color: var(--accent); 
+            font-size: 0.9rem; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+        }
+
+        /* Contact Button Styles */
+        .contact-trigger {
+            padding: 10px 24px;
+            font-size: 0.85rem;
+            background: transparent;
+            border: 1px solid rgba(34, 211, 238, 0.4);
+            color: var(--text-main);
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.4s var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .contact-trigger:hover {
+            background: rgba(34, 211, 238, 0.1);
+            border-color: var(--accent);
+            transform: scale(1.08);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .contact-trigger:active {
+            transform: scale(0.95);
+        }
+
+        .contact-trigger.active {
+            background: var(--accent);
+            color: var(--bg-base);
+            border-color: var(--accent);
+            animation: pulse 0.6s ease-out;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 var(--accent); }
+            70% { box-shadow: 0 0 0 15px rgba(34, 211, 238, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); }
+        }
+
+        /* Expandable Email Box */
+        .email-reveal {
+            max-height: 0;
+            overflow: hidden;
+            width: 100%;
+            transition: all 0.6s var(--transition);
+            opacity: 0;
+            margin-top: 0;
+        }
+
+        .email-reveal.active {
+            max-height: 120px;
+            opacity: 1;
+            margin-top: 20px;
+            animation: expandDown 0.6s ease-out;
+        }
+
+        @keyframes expandDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .email-box {
+            background: rgba(2, 6, 23, 0.6);
+            border: 1px solid var(--accent);
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.15);
+            gap: 10px;
+            animation: emailBoxGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes emailBoxGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(34, 211, 238, 0.15); }
+            50% { box-shadow: 0 0 30px rgba(34, 211, 238, 0.3); }
+        }
+
+        .email-text {
+            font-size: 0.9rem;
+            color: var(--accent);
+            font-family: monospace;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 5px;
+            font-size: 1.1rem;
+        }
+
+        .copy-btn:hover {
+            color: var(--accent);
+            transform: scale(1.3) rotate(15deg);
+        }
 
         /* --- Contact Section --- */
         #contact { text-align: center; }
-        .contact-glass { max-width: 600px; margin: 0 auto; padding: 50px; }
-        .contact-glass i { font-size: 2rem; color: var(--accent); margin-bottom: 15px; }
-        .contact-email { font-size: 1.5rem; color: var(--text-main); text-decoration: none; font-weight: 600; transition: 0.3s; }
-        .contact-email:hover { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
+        .contact-glass { 
+            max-width: 700px; 
+            margin: 0 auto; 
+            padding: 70px 50px; 
+            animation: contactFadeIn 1s ease-out;
+        }
 
-        footer { padding: 40px; text-align: center; border-top: 1px solid var(--glass-border); color: var(--text-dim); font-size: 0.9rem; }
+        @keyframes contactFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
 
-        /* Mobile Responsiveness Tweak */
+        .contact-glass i { 
+            font-size: 2.5rem; 
+            color: var(--accent); 
+            margin-bottom: 25px;
+            animation: iconBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .contact-email { 
+            font-size: clamp(1.2rem, 4vw, 2rem); 
+            color: var(--text-main); 
+            text-decoration: none; 
+            font-weight: 700; 
+            transition: all 0.4s var(--transition);
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .contact-email:hover { 
+            color: var(--accent); 
+            text-shadow: 0 0 25px var(--accent);
+            transform: scale(1.08);
+        }
+
+        footer { 
+            padding: 60px 20px; 
+            text-align: center; 
+            border-top: 1px solid var(--glass-border); 
+            color: var(--text-dim); 
+            font-size: 0.95rem;
+            font-weight: 300;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-base); }
+        ::-webkit-scrollbar-thumb { 
+            background: var(--glass-border); 
+            border-radius: 10px; 
+            transition: 0.3s;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-dark); }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--accent);
+            color: var(--bg-base);
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transform: translateY(100px);
+            transition: all 0.5s var(--transition);
+            z-index: 2000;
+            box-shadow: 0 10px 30px rgba(34, 211, 238, 0.4);
+            animation: toastSlide 0.5s ease-out forwards;
+        }
+
+        .toast.show {
+            animation: toastSlideIn 0.5s ease-out forwards;
+        }
+
+        @keyframes toastSlideIn {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Mobile Responsiveness */
         @media (max-width: 768px) {
-            header h1 { font-size: 2.8rem; }
-            .section { padding: 80px 5%; }
-            .glass { backdrop-filter: blur(8px); } /* Reduce blur slightly on mobile for performance */
+            .section { padding: 100px 6%; }
+            .services-grid { grid-template-columns: 1fr; }
+            .team-grid { grid-template-columns: 1fr; }
+            .glass { backdrop-filter: blur(10px); }
+            nav { padding: 1.2rem 6%; }
+            .contact-glass { padding: 50px 30px; }
+            .logo-img { height: 40px; }
+            .logo-text { font-size: 1.1rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="blob"></div>
+    <div class="blob-container">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
 
-    <nav>
-        <div class="logo">VOICEPRO<span>.</span>CONNECT</div>
+    <nav id="navbar">
+        <a href="#" class="logo-container" onclick="scrollToTop(event)">
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663526274402/xTUbpFEzcLEfrSWz.png" alt="VoicePro Connect" class="logo-img">
+            <span class="logo-text">VOICEPRO<span style="color: var(--accent);">.</span>CONNECT</span>
+        </a>
+        <a href="#contact" class="btn" style="padding: 10px 25px; font-size: 0.8rem;">Contact</a>
     </nav>
 
     <header>
-        <h1>Next-Gen Communication Solutions</h1>
-        <p>A specialized, owner-operated boutique call center delivering high-impact global support. We manage the dialogue, you drive the growth.</p>
-        <a href="#contact" class="btn">Connect Now</a>
+        <h1 data-aos="fade-up">Next-Gen Communication</h1>
+        <p data-aos="fade-up" data-aos-delay="200">A specialized, owner-operated boutique call center delivering high-impact global support. We manage the dialogue, you drive the growth.</p>
+        <a href="#services" class="btn" data-aos="fade-up" data-aos-delay="400">Explore Capabilities</a>
     </header>
 
     <section class="section" id="services">
         <h2>Our Core Capabilities</h2>
-        <p class="section-subtitle">Premium services executed by our specialized leadership team.</p>
+        <p class="section-subtitle">Premium services executed by our specialized leadership team using cutting-edge communication infrastructure.</p>
         <div class="services-grid">
             <div class="service-card glass">
                 <i class="fas fa-satellite-dish"></i>
                 <h3>Inbound Excellence</h3>
-                <p>24/7 technical helpdesk, customer care, and response management that elevates your brand reputation.</p>
+                <p>24/7 technical helpdesk, customer care, and response management that elevates your brand reputation with every interaction.</p>
             </div>
             <div class="service-card glass">
                 <i class="fas fa-chart-line"></i>
                 <h3>Lead Acquisition</h3>
-                <p>Strategic, high-conversion outbound campaigns designed to build a robust sales pipeline.</p>
+                <p>Strategic, high-conversion outbound campaigns designed to build a robust sales pipeline and maximize ROI.</p>
             </div>
             <div class="service-card glass">
                 <i class="fas fa-network-wired"></i>
                 <h3>Workflow Optimization</h3>
-                <p>Professional virtual assistance and administrative back-office support for modern teams.</p>
+                <p>Professional virtual assistance and administrative back-office support tailored for modern, fast-scaling teams.</p>
             </div>
         </div>
     </section>
 
-    <section class="section" id="team" style="background: rgba(2, 6, 23, 0.4);">
+    <section class="section" id="team" style="background: rgba(2, 6, 23, 0.3);">
         <h2>Executive Leadership</h2>
-        <p class="section-subtitle">Dedicated partners focused on operational integrity and results.</p>
+        <p class="section-subtitle">Dedicated partners focused on operational integrity, strategic growth, and delivering measurable results.</p>
         <div class="team-grid">
             
+            <!-- Jackson Reed -->
             <div class="member-card glass">
                 <div class="member-icon-wrap"><i class="fas fa-user-tie"></i></div>
                 <h3>Jackson Reed</h3>
                 <p class="member-title">Founder / Operations Manager</p>
+                <button class="contact-trigger" onclick="toggleContact(this, 'reed.jackson.vpc@gmail.com')">
+                    <i class="fas fa-envelope"></i> Contact
+                </button>
+                <div class="email-reveal">
+                    <div class="email-box">
+                        <span class="email-text">reed.jackson.vpc@gmail.com</span>
+                        <button class="copy-btn" onclick="copyEmail('reed.jackson.vpc@gmail.com')">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
 
+            <!-- Jonathan Reed -->
             <div class="member-card glass">
                 <div class="member-icon-wrap"><i class="fas fa-users-gear"></i></div>
                 <h3>Jonathan Reed</h3>
                 <p class="member-title">Founder / HR Director</p>
+                <button class="contact-trigger" onclick="toggleContact(this, 'reed.jonathan.vpc@gmail.com')">
+                    <i class="fas fa-envelope"></i> Contact
+                </button>
+                <div class="email-reveal">
+                    <div class="email-box">
+                        <span class="email-text">reed.jonathan.vpc@gmail.com</span>
+                        <button class="copy-btn" onclick="copyEmail('reed.jonathan.vpc@gmail.com')">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
 
+            <!-- Jordan Reed -->
             <div class="member-card glass">
                 <div class="member-icon-wrap"><i class="fas fa-bolt"></i></div>
                 <h3>Jordan Reed</h3>
                 <p class="member-title">Founder / Chaser</p>
+                <button class="contact-trigger" onclick="toggleContact(this, 'reed.jordan.vpc@gmail.com')">
+                    <i class="fas fa-envelope"></i> Contact
+                </button>
+                <div class="email-reveal">
+                    <div class="email-box">
+                        <span class="email-text">reed.jordan.vpc@gmail.com</span>
+                        <button class="copy-btn" onclick="copyEmail('reed.jordan.vpc@gmail.com')">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
 
+            <!-- Tommy Luther -->
             <div class="member-card glass">
-                <div class="member-icon-wrap"><i class="fas fa-shield-halved"></i></div>
+                <div class="member-icon-wrap"><i class="fas fa-user-shield"></i></div>
                 <h3>Tommy Luther</h3>
-                <p class="member-title">Head of Security</p>
+                <p class="member-title">Security in Charge</p>
+                <button class="contact-trigger" onclick="toggleContact(this, 'luther.tommy.vpc@gmail.com')">
+                    <i class="fas fa-envelope"></i> Contact
+                </button>
+                <div class="email-reveal">
+                    <div class="email-box">
+                        <span class="email-text">luther.tommy.vpc@gmail.com</span>
+                        <button class="copy-btn" onclick="copyEmail('luther.tommy.vpc@gmail.com')">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -240,16 +795,121 @@
 
     <section id="contact" class="section">
         <div class="contact-glass glass">
-            <i class="fas fa-envelope-open-text"></i>
+            <i class="fas fa-paper-plane"></i>
             <h2>Start the Conversation</h2>
-            <p style="color: var(--text-dim); margin-bottom: 25px;">We are ready to scale your communication strategy.</p>
+            <p style="color: var(--text-dim); margin-bottom: 25px; font-weight: 300;">Our team is ready to scale your communication strategy with precision.</p>
             <a href="mailto:voiceproconnect@gmail.com" class="contact-email">voiceproconnect@gmail.com</a>
         </div>
     </section>
 
     <footer>
-        &copy; 2026 VoicePro Connect. Highly specialized communication partners.
+        &copy; 2026 VoicePro Connect. Liquid-Glass Communication Solutions. All Rights Reserved.
     </footer>
 
+    <div id="toast" class="toast">Email copied to clipboard!</div>
+
+    <script>
+        // Scroll Animation Observer
+        const observerOptions = {
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Contact Toggle Logic
+        function toggleContact(btn, email) {
+            const card = btn.closest('.member-card');
+            const reveal = card.querySelector('.email-reveal');
+            const isActive = btn.classList.contains('active');
+            
+            if (isActive) {
+                btn.classList.remove('active');
+                btn.innerHTML = '<i class="fas fa-envelope"></i> Contact';
+                reveal.classList.remove('active');
+            } else {
+                btn.classList.add('active');
+                btn.innerHTML = '<i class="fas fa-times"></i> Close';
+                reveal.classList.add('active');
+                
+                // Smooth scroll to card if it is cut off
+                setTimeout(() => {
+                    const rect = reveal.getBoundingClientRect();
+                    if (rect.bottom > window.innerHeight) {
+                        window.scrollBy({ top: rect.bottom - window.innerHeight + 20, behavior: 'smooth' });
+                    }
+                }, 400);
+            }
+        }
+
+        // Copy to Clipboard
+        function copyEmail(email) {
+            navigator.clipboard.writeText(email).then(() => {
+                const toast = document.getElementById('toast');
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            });
+        }
+
+        // Scroll to Top
+        function scrollToTop(event) {
+            event.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Parallax effect for blobs
+        window.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            const blob1 = document.querySelector('.blob-1');
+            const blob2 = document.querySelector('.blob-2');
+            
+            if (blob1) blob1.style.transform = `translate(${x * 50}px, ${y * 50}px)`;
+            if (blob2) blob2.style.transform = `translate(${-x * 50}px, ${-y * 50}px)`;
+        });
+
+        // Smooth scroll anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href !== '#contact') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        // Stagger animations on page load
+        window.addEventListener('load', () => {
+            document.querySelectorAll('[data-aos]').forEach((el, index) => {
+                el.style.animation = `fadeInUp 1s ease-out ${0.2 + index * 0.1}s both`;
+            });
+        });
+    </script>
 </body>
 </html>
