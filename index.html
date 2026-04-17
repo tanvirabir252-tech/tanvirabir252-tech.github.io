@@ -7,106 +7,248 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary: #0a192f;
-            --secondary: #172a45;
-            --accent: #64ffda;
-            --text-light: #ccd6f6;
-            --text-dim: #8892b0;
+            /* Palette: Deep Ocean and Cyber Cyan */
+            --bg-base: #020617; /* Very Dark Slate */
+            --glass-bg: rgba(255, 255, 255, 0.03); /* Translucent White */
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --accent: #22d3ee; /* Cyan Accent */
+            --accent-glow: rgba(34, 211, 238, 0.4);
+            --text-main: #f1f5f9;
+            --text-dim: #94a3b8;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--primary); color: var(--text-light); line-height: 1.6; }
+        /* --- Reset & Base --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body { 
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; 
+            background-color: var(--bg-base); 
+            color: var(--text-main); 
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(at 10% 10%, rgba(34, 211, 238, 0.1) 0px, transparent 50%),
+                radial-gradient(at 90% 90%, rgba(100, 255, 218, 0.05) 0px, transparent 50%);
+        }
 
-        /* Navigation */
-        nav { background: rgba(10, 25, 47, 0.95); padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid var(--secondary); }
-        .logo { font-size: 1.5rem; font-weight: bold; color: var(--accent); letter-spacing: 1px; }
+        /* --- Liquid Background Element --- */
+        .blob {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(180deg, var(--accent) 0%, #1e40af 100%);
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.2;
+            z-index: -1;
+            animation: blobfloat 20s infinite alternate;
+        }
+        @keyframes blobfloat {
+            0% { transform: translate(-100px, -100px) scale(1); }
+            100% { transform: translate(100px, 100px) scale(1.2); }
+        }
 
-        /* Hero Section */
-        header { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 20px; background: radial-gradient(circle, #172a45 0%, #0a192f 100%); }
-        header h1 { font-size: 3.5rem; margin-bottom: 1rem; }
-        header p { font-size: 1.2rem; color: var(--text-dim); max-width: 600px; margin-bottom: 2rem; }
-        .btn { padding: 12px 30px; border: 1px solid var(--accent); color: var(--accent); text-decoration: none; border-radius: 5px; transition: 0.3s; }
-        .btn:hover { background: rgba(100, 255, 218, 0.1); }
+        /* --- Standard Section Spacing --- */
+        .section { padding: 120px 10%; position: relative; }
+        h2 { font-size: 2.8rem; text-align: center; margin-bottom: 1rem; color: var(--text-main); text-transform: uppercase; letter-spacing: 2px; }
+        .section-subtitle { text-align: center; color: var(--text-dim); max-width: 600px; margin: 0 auto 60px; font-size: 1.1rem; }
 
-        /* Services Section */
-        .section { padding: 80px 10%; text-align: center; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 40px; }
-        .card { background: var(--secondary); padding: 30px; border-radius: 10px; transition: 0.3s; border-bottom: 3px solid transparent; }
-        .card:hover { transform: translateY(-10px); border-color: var(--accent); }
-        .card i { font-size: 2.5rem; color: var(--accent); margin-bottom: 15px; }
+        /* --- Universal Glass Styling --- */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px); /* Crucial for Liquid Glass */
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+            transition: 0.4s ease;
+        }
+        .glass:hover {
+            border-color: rgba(34, 211, 238, 0.3);
+            box-shadow: 0 8px 32px 0 var(--accent-glow);
+            transform: translateY(-5px);
+        }
 
-        /* Team Section (No Photos) */
-        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-top: 40px; }
-        .member { padding: 20px; }
-        .member-icon { width: 80px; height: 80px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; border: 2px solid var(--accent); font-size: 1.5rem; color: var(--accent); }
+        /* --- Navigation --- */
+        nav { 
+            background: rgba(2, 6, 23, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 1.2rem 8%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: fixed; 
+            width: 100%; 
+            top: 0; 
+            z-index: 1000; 
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .logo { font-size: 1.4rem; font-weight: 800; color: var(--text-main); letter-spacing: 2px; }
+        .logo span { color: var(--accent); }
 
-        footer { padding: 40px; text-align: center; border-top: 1px solid var(--secondary); color: var(--text-dim); }
+        /* --- Hero Section --- */
+        header { 
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+            padding: 0 20px;
+            position: relative;
+        }
+        header h1 { font-size: 4rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; background: linear-gradient(to right, #fff, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        header p { font-size: 1.3rem; color: var(--text-dim); max-width: 700px; margin-bottom: 3rem; }
+        
+        /* Glass Button */
+        .btn { 
+            padding: 14px 35px; 
+            background: var(--glass-bg);
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--accent);
+            color: var(--accent); 
+            text-decoration: none; 
+            border-radius: 50px; 
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+        .btn:hover { background: var(--accent); color: var(--bg-base); box-shadow: 0 0 30px var(--accent); }
+
+        /* --- Services Section --- */
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; }
+        .service-card { padding: 40px; text-align: left; position: relative; overflow: hidden; }
+        .service-card i { font-size: 2.2rem; color: var(--accent); margin-bottom: 20px; display: inline-block; }
+        .service-card h3 { font-size: 1.5rem; margin-bottom: 10px; color: var(--text-main); }
+        .service-card p { color: var(--text-dim); font-size: 1rem; }
+        /* Add a soft glow behind the icon */
+        .service-card i::after { content:''; position: absolute; width: 50px; height: 50px; background: var(--accent); filter: blur(35px); opacity: 0.3; left: 30px; top: 30px; z-index: -1; }
+
+        /* --- Executive Team Section --- */
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 50px; }
+        .member-card { padding: 30px; text-align: center; }
+        
+        /* The "Liquid" Icon Container (Replacing Photos) */
+        .member-icon-wrap { 
+            width: 100px; 
+            height: 100px; 
+            background: rgba(34, 211, 238, 0.05);
+            border: 2px solid var(--accent);
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin: 0 auto 20px; 
+            font-size: 2rem; 
+            color: var(--accent);
+            box-shadow: 0 0 20px var(--accent-glow), inset 0 0 10px var(--accent-glow);
+            position: relative;
+        }
+        /* Liquid ripple effect */
+        .member-icon-wrap::before { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; background: var(--accent); opacity: 0.1; animation: ripple 3s infinite; }
+        @keyframes ripple { 0% { transform: scale(1); opacity: 0.1; } 100% { transform: scale(1.4); opacity: 0; } }
+
+        .member-card h3 { font-size: 1.3rem; color: var(--text-main); margin-bottom: 5px; }
+        .member-title { color: var(--accent); font-size: 0.95rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- Contact Section --- */
+        #contact { text-align: center; }
+        .contact-glass { max-width: 600px; margin: 0 auto; padding: 50px; }
+        .contact-glass i { font-size: 2rem; color: var(--accent); margin-bottom: 15px; }
+        .contact-email { font-size: 1.5rem; color: var(--text-main); text-decoration: none; font-weight: 600; transition: 0.3s; }
+        .contact-email:hover { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
+
+        footer { padding: 40px; text-align: center; border-top: 1px solid var(--glass-border); color: var(--text-dim); font-size: 0.9rem; }
+
+        /* Mobile Responsiveness Tweak */
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.8rem; }
+            .section { padding: 80px 5%; }
+            .glass { backdrop-filter: blur(8px); } /* Reduce blur slightly on mobile for performance */
+        }
     </style>
 </head>
 <body>
 
+    <div class="blob"></div>
+
     <nav>
-        <div class="logo">VOICEPRO CONNECT</div>
+        <div class="logo">VOICEPRO<span>.</span>CONNECT</div>
     </nav>
 
     <header>
-        <h1>Global Communication Excellence</h1>
-        <p>Expert-led call center solutions designed to scale your business. We handle the talk, you handle the growth.</p>
-        <a href="#contact" class="btn">Partner With Us</a>
+        <h1>Next-Gen Communication Solutions</h1>
+        <p>A specialized, owner-operated boutique call center delivering high-impact global support. We manage the dialogue, you drive the growth.</p>
+        <a href="#contact" class="btn">Connect Now</a>
     </header>
 
-    <section class="section">
-        <h2>Our Services</h2>
-        <div class="grid">
-            <div class="card">
-                <i class="fas fa-headset"></i>
-                <h3>Inbound Support</h3>
-                <p>24/7 dedicated customer service to ensure your clients are always heard.</p>
+    <section class="section" id="services">
+        <h2>Our Core Capabilities</h2>
+        <p class="section-subtitle">Premium services executed by our specialized leadership team.</p>
+        <div class="services-grid">
+            <div class="service-card glass">
+                <i class="fas fa-satellite-dish"></i>
+                <h3>Inbound Excellence</h3>
+                <p>24/7 technical helpdesk, customer care, and response management that elevates your brand reputation.</p>
             </div>
-            <div class="card">
-                <i class="fas fa-phone-volume"></i>
-                <h3>Lead Generation</h3>
-                <p>High-conversion outbound strategies to build your sales pipeline.</p>
+            <div class="service-card glass">
+                <i class="fas fa-chart-line"></i>
+                <h3>Lead Acquisition</h3>
+                <p>Strategic, high-conversion outbound campaigns designed to build a robust sales pipeline.</p>
             </div>
-            <div class="card">
-                <i class="fas fa-user-tie"></i>
-                <h3>Virtual Assistance</h3>
-                <p>Professional administrative support for busy executives and teams.</p>
+            <div class="service-card glass">
+                <i class="fas fa-network-wired"></i>
+                <h3>Workflow Optimization</h3>
+                <p>Professional virtual assistance and administrative back-office support for modern teams.</p>
             </div>
         </div>
     </section>
 
-    <section class="section" style="background: #0d1d33;">
+    <section class="section" id="team" style="background: rgba(2, 6, 23, 0.4);">
         <h2>Executive Leadership</h2>
+        <p class="section-subtitle">Dedicated partners focused on operational integrity and results.</p>
         <div class="team-grid">
-            <div class="member">
-                <div class="member-icon"><i class="fas fa-user-shield"></i></div>
+            
+            <div class="member-card glass">
+                <div class="member-icon-wrap"><i class="fas fa-user-tie"></i></div>
                 <h3>Jackson Reed</h3>
-                <p style="color: var(--accent)">Co-Founder / Operations</p>
+                <p class="member-title">Founder / Operations Manager</p>
             </div>
-            <div class="member">
-                <div class="member-icon"><i class="fas fa-user-gear"></i></div>
+
+            <div class="member-card glass">
+                <div class="member-icon-wrap"><i class="fas fa-users-gear"></i></div>
                 <h3>Jonathan Reed</h3>
-                <p style="color: var(--accent)">Co-Founder / Strategy</p>
+                <p class="member-title">Founder / HR Director</p>
             </div>
-            <div class="member">
-                <div class="member-icon"><i class="fas fa-user-check"></i></div>
+
+            <div class="member-card glass">
+                <div class="member-icon-wrap"><i class="fas fa-bolt"></i></div>
                 <h3>Jordan Reed</h3>
-                <p style="color: var(--accent)">Co-Founder / Tech Lead</p>
+                <p class="member-title">Founder / Chaser</p>
             </div>
+
+            <div class="member-card glass">
+                <div class="member-icon-wrap"><i class="fas fa-shield-halved"></i></div>
+                <h3>Tommy Luther</h3>
+                <p class="member-title">Head of Security</p>
+            </div>
+
         </div>
     </section>
 
     <section id="contact" class="section">
-        <h2>Get In Touch</h2>
-        <p>Ready to elevate your customer experience? Contact VoicePro Connect today.</p>
-        <div style="margin-top: 20px;">
-            <p><i class="fas fa-envelope" style="color: var(--accent)"></i> contact@voiceproconnect.com</p>
+        <div class="contact-glass glass">
+            <i class="fas fa-envelope-open-text"></i>
+            <h2>Start the Conversation</h2>
+            <p style="color: var(--text-dim); margin-bottom: 25px;">We are ready to scale your communication strategy.</p>
+            <a href="mailto:voiceproconnect@gmail.com" class="contact-email">voiceproconnect@gmail.com</a>
         </div>
     </section>
 
     <footer>
-        &copy; 2026 VoicePro Connect. All rights reserved.
+        &copy; 2026 VoicePro Connect. Highly specialized communication partners.
     </footer>
 
 </body>
